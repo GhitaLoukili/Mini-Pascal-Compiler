@@ -10,10 +10,12 @@ FILE *file;
 int NbrIDFS=0;
 
 void Lread_car(){
+    // Une fonction qui lit un caractère du fichier
 	CUR_CHAR=fgetc(file);
 }
 
 char * trans(enum TOKENS token){
+    // Une fonction qui retourne le nom du token
 	switch(token){
 		case PROGRAM_TOKEN:
 			return "PROGRAM_TOKEN";
@@ -91,19 +93,29 @@ char * trans(enum TOKENS token){
 }
 
 void Lskip_space() {
+    // Une fonction qui saute les espaces, les tabulations et les retours à la ligne
     while (CUR_CHAR == ' ' || CUR_CHAR == '\n' || CUR_CHAR == '\t') {
         Lread_car();
     }
 }
 
 void Lread_number() {
+    // Une fonction qui lit un nombre
     char number[11];
     int j = 0;
     number[j++] = CUR_CHAR;
     Lread_car();
-    while (isdigit(CUR_CHAR)) {
+    while (isdigit(CUR_CHAR) && j < 10) {
         number[j++] = CUR_CHAR;
         Lread_car();
+        if (j == 10 && isdigit(CUR_CHAR)) {
+            CUR_SYMB.token = ERREUR_TOKEN;
+            strcpy(CUR_SYMB.nom, "ERR");
+            while (isdigit(CUR_CHAR)) {
+                Lread_car();
+            }
+            return;
+        }
     }
     number[j] = '\0';
     CUR_SYMB.token = NUM_TOKEN;
@@ -111,6 +123,7 @@ void Lread_number() {
 }
 
 void Lread_word() {
+    // Une fonction qui lit un mot
     char word[20];
     int j = 0;
     word[j++] = CUR_CHAR;
@@ -118,6 +131,14 @@ void Lread_word() {
     while (isalnum(CUR_CHAR) ) {
         word[j++] = CUR_CHAR;
         Lread_car();
+        if (j == 20 && isalnum(CUR_CHAR)) {
+            CUR_SYMB.token = ERREUR_TOKEN;
+            strcpy(CUR_SYMB.nom, "ERR");
+            while (isalnum(CUR_CHAR)) {
+                Lread_car();
+            }
+            return;
+        }
     }
     word[j] = '\0';
     if (strcmp(word, "program") == 0) {
@@ -149,6 +170,7 @@ void Lread_word() {
 }
 
 void Lread_special() {
+    // Une fonction qui lit un caractère spécial
     switch (CUR_CHAR) {
         case ';':
             CUR_SYMB.token = PV_TOKEN;
@@ -304,5 +326,14 @@ void lexical() {
 		Lanalyse();
 		printf("%s\n ",trans(CUR_SYMB.token));
 	} while (CUR_CHAR!=EOF && CUR_CHAR!=FIN_TOKEN);
+
     printf("\n********************************************* FIN D'ANALYSE LEXICALE *********************************************\n\n");
 }
+
+// int main(int argc, char const *argv[])
+// {
+//     opn_file("C:/Users/HP/OneDrive/Documents/GitHub/Mini-Pascal-Compiler/test/test1.p");
+//     lexical();
+//     fclose(file);
+//     return 0;
+// }
