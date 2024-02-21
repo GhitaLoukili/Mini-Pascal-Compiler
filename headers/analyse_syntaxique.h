@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifndef ANALYSE_SYNTAXIQUE_H
+#define ANALYSE_SYNTAXIQUE_H
+
 enum ERREURS{
   PROGRAM_ERREUR,CONST_ERREUR,VAR_ERREUR,BEGIN_ERREUR,END_ERREUR,IF_ERREUR,THEN_ERREUR,WHILE_ERREUR,
   DO_ERREUR,READ_ERREUR,WRITE_ERREUR,PV_ERREUR,PT_ERREUR,PLUS_ERREUR,MOINS_ERREUR,MULT_ERREUR,
@@ -33,3 +36,5 @@ void read_number();
 void read_special();
 void analyse();
 void syntaxique();
+
+#endif

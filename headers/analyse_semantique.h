@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifndef ANALYSE_SEMANTIQUE_H
+#define ANALYSE_SEMANTIQUE_H
+
 extern enum TSYM{
     TPROG,
     TCONST,
@@ -26,3 +29,5 @@ void regle3();
 void regle4();
 void regle5();
 void semantique();
+
+#endif
